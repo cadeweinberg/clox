@@ -1,3 +1,12 @@
+
+# Build Directory 
+[oO]ut
+[bB]uild
+
+# Editor and Tooling Files
+.vs/
+.cache/
+
 # Prerequisites
 *.d
 
