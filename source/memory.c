@@ -31,7 +31,6 @@ bool reallocate(void **pointer, [[maybe_unused]] size_t old_size, size_t new_siz
 
 bool array_growth(ArrayGrowthInfo info, size_t element_size, void **array, uint32_t *capacity) {
     assert(array != NULL);
-    assert(*array != NULL);
     assert(capacity != NULL);
     assert(element_size > 0);
     

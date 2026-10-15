@@ -7,9 +7,23 @@
 
 #include <stdlib.h>
 
+#include "munit.h"
 #include "test/memory.h"
 
+static MunitSuite suite_array[] = {
+    {"/memory", memory_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE},
+    {NULL, NULL, NULL, 0, MUNIT_SUITE_OPTION_NONE}
+};
+
+static MunitSuite main_suite = {
+    "clox",
+    NULL,
+    suite_array,
+    1,
+    MUNIT_SUITE_OPTION_NONE
+};
+
 int main (int argc, char **argv) {
-    return munit_suite_main(&memory_suite, NULL, argc, argv);
+    return munit_suite_main(&main_suite, NULL, argc, argv);
 }
 

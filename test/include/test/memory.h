@@ -6,4 +6,5 @@
 
 #include "munit.h"
 
-extern const MunitSuite memory_suite;
+
+extern MunitTest memory_tests[];

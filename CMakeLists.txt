@@ -60,6 +60,8 @@ set(CLOX_TEST_INCLUDE_DIR ${CLOX_TEST_DIR}/include)
 set(CLOX_TEST_SOURCE_DIR ${CLOX_TEST_DIR}/source)
 set(CLOX_EXTERNAL_DIR ${CLOX_BASE_DIR}/external)
 
+# #TODO: add Profiling and Sanitization builds. 
+
 set(CLOX_WARNINGS_GNU
 	-Wall
 	-Wextra

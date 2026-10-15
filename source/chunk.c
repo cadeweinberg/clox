@@ -13,9 +13,18 @@
 
 
 void chunk_init(Chunk* chunk) {
+    assert(chunk != NULL);
     chunk->count = 0;
     chunk->capacity = 0;
     chunk->code = NULL;
+}
+
+void chunk_free(Chunk *chunk) {
+    assert(chunk != NULL);
+    if (!reallocate((void**)&chunk->code, chunk->capacity * sizeof(*chunk->code), 0)) {
+        exit(EXIT_FAILURE);
+    }
+    chunk_init(chunk);
 }
 
 static bool chunk_full(const Chunk *chunk) {
