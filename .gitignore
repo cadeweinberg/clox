@@ -6,6 +6,9 @@
 # Editor and Tooling Files
 .vs/
 .cache/
+.vscode/
+
+compile_commands.json
 
 # Prerequisites
 *.d
