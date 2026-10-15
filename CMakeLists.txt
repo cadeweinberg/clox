@@ -91,6 +91,7 @@ target_include_directories(clox_library PUBLIC ${CLOX_INCLUDE_DIR})
 
 target_sources(clox_library PRIVATE
 	${CLOX_SOURCE_DIR}/chunk.c
+	${CLOX_SOURCE_DIR}/debug.c
 	${CLOX_SOURCE_DIR}/memory.c
 )
 
