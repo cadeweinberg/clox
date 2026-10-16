@@ -93,6 +93,7 @@ target_sources(clox_library PRIVATE
 	${CLOX_SOURCE_DIR}/chunk.c
 	${CLOX_SOURCE_DIR}/debug.c
 	${CLOX_SOURCE_DIR}/memory.c
+	${CLOX_SOURCE_DIR}/value.c
 )
 
 set_target_properties(clox_library PROPERTIES
