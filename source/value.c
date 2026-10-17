@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-#include <assert.h>
 #include <stdio.h>
 
 #include "clox/memory.h"
@@ -29,8 +28,8 @@ static bool value_array_full(const ValueArray *array) {
 }
 
 static void value_array_grow(ValueArray *array) {
-    static const ArrayGrowthInfo info = {.growth_factor = 2, .initial_capacity = 8};
-    array_growth(info, sizeof(*array->values), (void**)&array->values, &array->capacity);
+    static const ArrayGrowInfo info = {.growth_factor = 2, .initial_capacity = 8};
+    array_grow(info, sizeof(*array->values), (void**)&array->values, &array->capacity);
 }
 
 uint32_t value_array_write(ValueArray *array, Value value) {

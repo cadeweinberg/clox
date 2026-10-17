@@ -28,6 +28,12 @@
  * on the choices and refactors we can make down the line. something to 
  * keep in mind.
  *
+ * @note if we write our own malloc implementation, we can remove the 
+ * 'old_size' parameter, this is because that information is held within
+ * the block of memory's metadata. so even if/when we want to add garbage 
+ * collection. we can use the allocation metadata to retrieve the old size
+ * for garbage collection purposes.
+ *
  * @return true if realloc succeeded
  * @return false if realloc failed
  */
@@ -47,10 +53,10 @@ bool reallocate(void **pointer, size_t old_size, size_t new_size);
 // Though the difference is likely to be neglidgable and very 
 // fast either way.
 
-typedef struct _ArrayGrowthInfo {
+typedef struct _ArrayGrowInfo {
     uint16_t growth_factor;
     uint16_t initial_capacity;
-} ArrayGrowthInfo;
+} ArrayGrowInfo;
 
 /**
  * @brief grow the given array, updating the capacity.
@@ -61,7 +67,7 @@ typedef struct _ArrayGrowthInfo {
  * @return true if realloc succeeded
  * @return false if realloc failed
  */
-bool array_growth(ArrayGrowthInfo info, size_t element_size, void **array, uint32_t *capacity);
+bool array_grow(ArrayGrowInfo info, size_t element_size, void **array, uint32_t *capacity);
 
 #endif // !CLOX_MEMORY_H
 

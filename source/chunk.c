@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-#include <assert.h>
 #include <stdlib.h>
 
 #include "clox/chunk.h"
@@ -39,12 +38,12 @@ static bool chunk_full(const Chunk *chunk) {
 }
 
 static void chunk_grow(Chunk *chunk) {
-    ArrayGrowthInfo info = {.growth_factor = 2, .initial_capacity = 8};
-    if (!array_growth(info, sizeof(*chunk->code), (void**)&chunk->code, &chunk->capacity)) {
+    ArrayGrowInfo info = {.growth_factor = 2, .initial_capacity = 8};
+    if (!array_grow(info, sizeof(*chunk->code), (void**)&chunk->code, &chunk->capacity)) {
         exit(EXIT_FAILURE);
     }
     uint32_t spare = chunk->capacity;
-    if (!array_growth(info, sizeof(*chunk->lines), (void**)&chunk->lines, &spare)) {
+    if (!array_grow(info, sizeof(*chunk->lines), (void**)&chunk->lines, &spare)) {
         exit(EXIT_FAILURE);
     }
 }

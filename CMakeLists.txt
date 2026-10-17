@@ -92,6 +92,7 @@ target_include_directories(clox_library PUBLIC ${CLOX_INCLUDE_DIR})
 target_sources(clox_library PRIVATE
 	${CLOX_SOURCE_DIR}/chunk.c
 	${CLOX_SOURCE_DIR}/debug.c
+	${CLOX_SOURCE_DIR}/lines.c
 	${CLOX_SOURCE_DIR}/memory.c
 	${CLOX_SOURCE_DIR}/value.c
 )
@@ -129,25 +130,30 @@ set_target_properties(munit PROPERTIES
 	C_EXTENSIONS OFF
 )
 
-add_executable(clox_tests)
+add_executable(clox_test)
 
-target_compile_options(clox_tests PRIVATE
+set_target_properties(clox_test PROPERTIES
+	OUTPUT_NAME test
+)
+
+
+target_compile_options(clox_test PRIVATE
 	$<$<OR:$<C_COMPILER_ID:GNU>,$<C_COMPILER_ID:Clang>,$<C_COMPILER_ID:AppleClang>>:${CLOX_WARNINGS_GNU}>
 	$<$<C_COMPILER_ID:MSVC>:${CLOX_WARNINGS_MSVC}>
 )
 
-target_include_directories(clox_tests PUBLIC 
+target_include_directories(clox_test PUBLIC 
 	${CLOX_INCLUDE_DIR}
 	${CLOX_TEST_INCLUDE_DIR}
 	${CLOX_EXTERNAL_DIR}/munit
 )
 
-target_link_libraries(clox_tests PRIVATE 
+target_link_libraries(clox_test PRIVATE 
 	clox_library
 	munit
 )
 
-target_sources(clox_tests PRIVATE
+target_sources(clox_test PRIVATE
 	${CLOX_TEST_SOURCE_DIR}/main.c
 
 	${CLOX_TEST_SOURCE_DIR}/memory.c
