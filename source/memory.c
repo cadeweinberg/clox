@@ -27,11 +27,12 @@ bool reallocate(void **pointer, [[maybe_unused]] size_t old_size, size_t new_siz
     return true;
 }
 
-
 bool array_grow(ArrayGrowInfo info, size_t element_size, void **array, uint32_t *capacity) {
     assert(array != NULL);
     assert(capacity != NULL);
     assert(element_size > 0);
+    assert(info.growth_factor > 0);
+    assert(info.initial_capacity > 0);
     
     if (*capacity == 0) { 
         (*capacity) = info.initial_capacity;

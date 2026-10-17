@@ -10,12 +10,14 @@
 
 /**
  * @brief a wrapper around c stdlib 'realloc' with the additional
- * behavior that passing in zero size calls c stdlib 'free'.
+ * behavior that passing in zero new_size calls c stdlib 'free'.
  *
- * @note the pointer given to reallocate is not modified in the case that 
+ * @pre pointer != NULL
+ * @post (*pointer) will point to an allocation with `size == new_size`
+ * @post the pointer given to reallocate is not modified in the case that 
  * the realloc failed.
  *
- * @note the pointer is set to NULL if the memory it referenced was free'd.
+ * @post the pointer is set to NULL if the memory it referenced was free'd.
  *
  * @note we are wrapping 'realloc' because while following the crafting 
  * interpreters tutorial, we are going to implement garbage collection.
@@ -61,11 +63,25 @@ typedef struct _ArrayGrowInfo {
 /**
  * @brief grow the given array, updating the capacity.
  *
- * Pass in a valid ArrayGrowthInfo structure to configure the rate of growth
- * and the initial capacity of arrays grown with this function.
+ * @note The ArrayGrowthInfo structure allows the caller to configure 
+ * the rate of growth and the initial capacity of arrays grown 
+ * with this function.
+ * 
+ * @note array_grow is implemented in terms of tha above reallocate, and 
+ * as such it's memory will be participating in garbage collection when that
+ * is added to the language.
  *
- * @return true if realloc succeeded
- * @return false if realloc failed
+ * @pre info.growth_factor != 0
+ * @pre info.initial_capacity != 0
+ * @pre element_size > 0
+ * @pre array != NULL
+ * @pre capacity != NULL
+ * @post `(*capacity) == initial_capacity` if `(*capacity) == 0`; else `(*capacity) == (*capacity) * info.growth_factor` 
+ * @post `(*array)` points to an allocation with `size == element_size * info.initial_capacity`
+ *       if `(*capacity) == 0`; else `element_size * (*capacity)` 
+ *
+ * @return true if growth succeeded
+ * @return false if growth failed
  */
 bool array_grow(ArrayGrowInfo info, size_t element_size, void **array, uint32_t *capacity);
 

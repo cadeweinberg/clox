@@ -6,6 +6,7 @@
  */
 
 #include "clox/memory.h"
+#include "munit.h"
 #include "test/memory.h"
 
 // reallocate has the signature
@@ -56,23 +57,40 @@ static MunitResult test_reallocate_array([[maybe_unused]] const MunitParameter *
 
 
 // array grow has the signature
+// `bool array_grow(ArrayGrowInfo info, size_t element_size, void** array, uint32_t *capacity)`
+//
+// it provides the following contract
+// 1. given a valid array and capacity pointer it will
+// 2. allocate an array with `size == element_size * initial_capacity` or
+// 3. with `size == element_size * growth_rate` if the capacity is non-zero
+// 4. return true if allocation was successful
+// 5. return false if allocation failed.
+//
+// calling array_grow to allocate a new array
+// asserts 1,2,4
+// calling array_grow on an existing array
+// asserts 1,3,4
+// 
+
+static MunitResult test_array_grow_simple([[maybe_unused]] const MunitParameter *params, [[maybe_unused]] void *data);
 
 MunitTest memory_tests[] = {
     {"/reallocate", test_reallocate_simple, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL},
     {"/reallocate/array", test_reallocate_array, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL},
+    {"/array_grow", test_array_grow_simple, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL},
     { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL}
 };
 
 static MunitResult test_reallocate_simple([[maybe_unused]] const MunitParameter *params, [[maybe_unused]] void *data) {
     int *ip = NULL;
-    munit_assert(reallocate((void**)&ip, 0, sizeof(int)));
-    munit_assert(ip != NULL);
+    munit_assert_true(reallocate((void**)&ip, 0, sizeof(int)));
+    munit_assert_ptr(ip, !=, NULL);
 
     *ip = 4;
     munit_assert_int(*ip, ==, 4);
 
-    munit_assert(reallocate((void**)&ip, sizeof(int), 0));
-    munit_assert(ip == NULL);
+    munit_assert_true(reallocate((void**)&ip, sizeof(int), 0));
+    munit_assert_ptr(ip, ==, NULL);
 
     return MUNIT_OK;
 }
@@ -81,8 +99,8 @@ static MunitResult test_reallocate_array([[maybe_unused]] const MunitParameter *
     int length = munit_rand_int_range(10, 100);
     int *ap = NULL;
     size_t size = sizeof(*ap) * (size_t)length;
-    munit_assert(reallocate((void**)&ap, 0, size));
-
+    munit_assert_true(reallocate((void**)&ap, 0, size));
+    munit_assert_ptr(ap, !=, NULL);
 
     for (int i = 0; i < length; ++i) {
         ap[i] = i;
@@ -93,6 +111,43 @@ static MunitResult test_reallocate_array([[maybe_unused]] const MunitParameter *
     }
 
     munit_assert(reallocate((void**)&ap, size, 0));
+    munit_assert_ptr(ap, ==, NULL);
 
+    return MUNIT_OK;
+}
+
+
+static MunitResult test_array_grow_simple([[maybe_unused]] const MunitParameter *params, [[maybe_unused]] void *data) {
+    ArrayGrowInfo info = {.growth_factor = 2, .initial_capacity = 8};
+    uint32_t capacity = 0;
+    uint32_t *array = NULL;
+    munit_assert(array_grow(info, sizeof(*array), (void**)&array, &capacity));
+    munit_assert_ptr(array, !=, NULL);
+    munit_assert_uint32(capacity, ==, info.initial_capacity);
+
+    for (uint32_t i = 0; i < capacity; ++i) {
+        array[i] = i;
+    }
+
+    for (uint32_t i = 0; i < capacity; ++i) {
+        munit_assert_uint32(array[i], ==, i);
+    }
+
+    uint32_t old_capacity = capacity;
+    munit_assert(array_grow(info, sizeof(*array), (void**)&array, &capacity));
+    munit_assert_ptr(array, !=, NULL);
+    munit_assert_uint32(capacity, ==, old_capacity * info.growth_factor);
+
+    for (uint32_t i = 0; i < capacity; ++i) {
+        array[i] = i;
+    }
+
+    for (uint32_t i = 0; i < capacity; ++i) {
+        munit_assert_uint32(array[i], ==, i);
+    }
+
+    munit_assert(reallocate((void**)&array, capacity * sizeof(*array), 0));
+    munit_assert_ptr(array, ==, NULL);
+    
     return MUNIT_OK;
 }
