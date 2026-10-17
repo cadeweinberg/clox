@@ -17,20 +17,18 @@ void chunk_init(Chunk* chunk) {
     chunk->count = 0;
     chunk->capacity = 0;
     chunk->code = NULL;
-    chunk->lines = NULL;
+    lines_init(&chunk->lines);
     value_array_init(&chunk->constants);
 }
 
 void chunk_free(Chunk *chunk) {
     assert(chunk != NULL);
+    lines_free(&chunk->lines);
+    value_array_free(&chunk->constants);
     if (!reallocate((void**)&chunk->code, chunk->capacity * sizeof(*chunk->code), 0)) {
         exit(EXIT_FAILURE);
     }
-    if (!reallocate((void**)&chunk->lines, sizeof(*chunk->lines) * chunk->capacity, 0)) {
-        exit(EXIT_FAILURE);
-    }
     chunk_init(chunk);
-    value_array_free(&chunk->constants);
 }
 
 static bool chunk_full(const Chunk *chunk) {
@@ -42,10 +40,6 @@ static void chunk_grow(Chunk *chunk) {
     if (!array_grow(info, sizeof(*chunk->code), (void**)&chunk->code, &chunk->capacity)) {
         exit(EXIT_FAILURE);
     }
-    uint32_t spare = chunk->capacity;
-    if (!array_grow(info, sizeof(*chunk->lines), (void**)&chunk->lines, &spare)) {
-        exit(EXIT_FAILURE);
-    }
 }
 
 void chunk_write(Chunk *chunk, uint8_t data, uint32_t line) {
@@ -54,8 +48,13 @@ void chunk_write(Chunk *chunk, uint8_t data, uint32_t line) {
         chunk_grow(chunk);
     }
 
-    chunk->lines[chunk->count] = line;
+    lines_set(&chunk->lines, line, chunk->count);
     chunk->code[chunk->count++] = data;
+}
+
+uint32_t chunk_get_source_line(Chunk *chunk, uint32_t index) {
+    assert(chunk != NULL);
+    return lines_get(&chunk->lines, index);
 }
 
 uint32_t chunk_add_constant(Chunk *chunk, Value value) {

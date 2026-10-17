@@ -6,7 +6,6 @@
  */
 
 #include "clox/memory.h"
-#include "munit.h"
 #include "test/memory.h"
 
 // reallocate has the signature

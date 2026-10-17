@@ -31,11 +31,16 @@ void disassemble_chunk(Chunk *chunk, const char *name) {
 uint32_t disassemble_instruction(Chunk *chunk, uint32_t offset) {
     printf("0x%04X ", offset);
 
-    if (offset > 0 &&
-        chunk->lines[offset] == chunk->lines[offset - 1]) {
-        printf("   | ");
+    uint32_t current_line = chunk_get_source_line(chunk, offset);
+    if (offset > 0) {
+        uint32_t previous_line = chunk_get_source_line(chunk, offset);
+        if (current_line == previous_line) {
+            printf("   | ");
+        } else {
+            printf("%4d ", current_line);
+        }
     } else {
-        printf("%4d ", chunk->lines[offset]);
+        printf("%4d ", current_line);
     }
 
     uint8_t instruction = chunk->code[offset];
