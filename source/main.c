@@ -12,7 +12,7 @@
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] const char *argv[]) {
     Chunk chunk;
-    chunk_init(&chunk);
+    chunk_ctor(&chunk);
 
     uint32_t constant = chunk_add_constant(&chunk, 1.2);
     chunk_write(&chunk, OP_CONSTANT, 1);
@@ -21,7 +21,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char *argv[]) {
     chunk_write(&chunk, OP_RETURN, 2);
     disassemble_chunk(&chunk, "Hello Chunk disassembly");
 
-    chunk_free(&chunk);
+    chunk_dtor(&chunk);
     return 0;
 }
 

@@ -23,8 +23,8 @@ typedef struct _Chunk {
     ValueArray constants;
 } Chunk;
 
-void chunk_init(Chunk *chunk);
-void chunk_free(Chunk *chunk);
+void chunk_ctor(Chunk *chunk);
+void chunk_dtor(Chunk *chunk);
 void chunk_write(Chunk *chunk, uint8_t data, uint32_t line);
 uint32_t chunk_get_source_line(Chunk *chunk, uint32_t index);
 uint32_t chunk_add_constant(Chunk *chunk, Value value);

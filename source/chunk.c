@@ -12,23 +12,23 @@
 #include "clox/value.h"
 
 
-void chunk_init(Chunk* chunk) {
+void chunk_ctor(Chunk* chunk) {
     assert(chunk != NULL);
     chunk->count = 0;
     chunk->capacity = 0;
     chunk->code = NULL;
-    lines_init(&chunk->lines);
-    value_array_init(&chunk->constants);
+    lines_ctor(&chunk->lines);
+    value_array_ctor(&chunk->constants);
 }
 
-void chunk_free(Chunk *chunk) {
+void chunk_dtor(Chunk *chunk) {
     assert(chunk != NULL);
-    lines_free(&chunk->lines);
-    value_array_free(&chunk->constants);
+    lines_dtor(&chunk->lines);
+    value_array_dtor(&chunk->constants);
     if (!reallocate((void**)&chunk->code, chunk->capacity * sizeof(*chunk->code), 0)) {
         exit(EXIT_FAILURE);
     }
-    chunk_init(chunk);
+    chunk_ctor(chunk);
 }
 
 static bool chunk_full(const Chunk *chunk) {

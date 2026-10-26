@@ -107,8 +107,8 @@ typedef struct _Lines {
     Run *runs;
 } Lines;
 
-void lines_init(Lines *lines);
-void lines_free(Lines *lines);
+void lines_ctor(Lines *lines);
+void lines_dtor(Lines *lines);
 
 /**
  * @brief Set the instruction as produced by the given source line

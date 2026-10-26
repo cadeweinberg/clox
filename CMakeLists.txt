@@ -154,6 +154,7 @@ target_link_libraries(clox_test PRIVATE
 )
 
 target_sources(clox_test PRIVATE
+	${CLOX_TEST_SOURCE_DIR}/lines.c
 	${CLOX_TEST_SOURCE_DIR}/chunk.c
 	${CLOX_TEST_SOURCE_DIR}/main.c
 	${CLOX_TEST_SOURCE_DIR}/memory.c

@@ -10,17 +10,17 @@
 #include "clox/memory.h"
 #include "clox/value.h"
 
-void value_array_init(ValueArray *array) {
+void value_array_ctor(ValueArray *array) {
     assert(array != NULL);
     array->count = 0;
     array->capacity = 0;
     array->values = NULL;
 }
 
-void value_array_free(ValueArray *array) {
+void value_array_dtor(ValueArray *array) {
     assert(array != NULL);
     reallocate((void**)&array->values, array->capacity * sizeof(*array->values), 0);
-    value_array_init(array);
+    value_array_ctor(array);
 }
 
 static bool value_array_full(const ValueArray *array) {
