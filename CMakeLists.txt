@@ -158,4 +158,10 @@ target_sources(clox_test PRIVATE
 	${CLOX_TEST_SOURCE_DIR}/chunk.c
 	${CLOX_TEST_SOURCE_DIR}/main.c
 	${CLOX_TEST_SOURCE_DIR}/memory.c
+	${CLOX_TEST_SOURCE_DIR}/value.c
 )
+
+
+
+
+
