@@ -54,7 +54,6 @@
 static MunitResult test_reallocate_simple([[maybe_unused]] const MunitParameter *params, [[maybe_unused]] void *data);
 static MunitResult test_reallocate_array([[maybe_unused]] const MunitParameter *params, [[maybe_unused]] void *data);
 
-
 // array grow has the signature
 // `bool array_grow(ArrayGrowInfo info, size_t element_size, void** array, uint32_t *capacity)`
 //

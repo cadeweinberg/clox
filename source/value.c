@@ -42,7 +42,7 @@ uint32_t value_array_write(ValueArray *array, Value value) {
     return array->count - 1;
 }
 
-Value value_array_get(ValueArray *array, uint32_t index) {
+Value value_array_read(ValueArray *array, uint32_t index) {
     assert(array != NULL);
     assert(array->count > index);
     return array->values[index];

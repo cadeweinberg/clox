@@ -6,6 +6,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "clox/chunk.h"
 #include "clox/memory.h"
@@ -42,28 +43,47 @@ static void chunk_grow(Chunk *chunk) {
     }
 }
 
-void chunk_write(Chunk *chunk, uint8_t data, uint32_t line) {
-    assert(chunk != NULL);
+static void chunk_code_write(Chunk *chunk, uint8_t data) {
     if (chunk_full(chunk)) {
         chunk_grow(chunk);
     }
 
-    lines_set(&chunk->lines, line, chunk->count);
     chunk->code[chunk->count++] = data;
 }
 
-uint32_t chunk_get_source_line(Chunk *chunk, uint32_t index) {
+static void chunk_lines_write(Chunk *chunk, uint32_t line) {
+    lines_set(&chunk->lines, line, chunk->count);
+}
+
+void chunk_code_write_return(Chunk *chunk, uint32_t line) {
+    chunk_lines_write(chunk, line);
+    chunk_code_write(chunk, OP_RETURN);
+}
+
+void chunk_code_write_constant(Chunk *chunk, Value constant, uint32_t line) {
+    chunk_lines_write(chunk, line);
+    uint32_t index = value_array_write(&chunk->constants, constant);
+    if (index < UINT8_MAX) {
+        chunk_code_write(chunk, OP_CONSTANT);
+        chunk_code_write(chunk, (uint8_t)index);
+        return;
+    }
+
+    chunk_code_write(chunk, OP_CONSTANT_EXTENDED);
+    uint8_t buffer[sizeof(uint32_t)];
+    memcpy(buffer, &index, sizeof(uint32_t));
+    for (uint32_t i = 0; i < sizeof(uint32_t); ++i) {
+        chunk_code_write(chunk, buffer[i]);
+    }
+}
+
+uint32_t chunk_source_line_read(Chunk *chunk, uint32_t index) {
     assert(chunk != NULL);
     return lines_get(&chunk->lines, index);
 }
 
-uint32_t chunk_add_constant(Chunk *chunk, Value value) {
-    assert(chunk != NULL);
-    return value_array_write(&chunk->constants, value);
-}
 
-
-Value chunk_get_constant(Chunk *chunk, uint32_t index) {
+Value chunk_constant_read(Chunk *chunk, uint32_t index) {
     assert(chunk != NULL);
-    return value_array_get(&chunk->constants, index);
+    return value_array_read(&chunk->constants, index);
 }

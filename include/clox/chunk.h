@@ -10,9 +10,10 @@
 #include "clox/lines.h"
 #include "clox/value.h"
 
-typedef enum _OpCode {
+typedef enum _OpCode : uint8_t {
     OP_RETURN,
     OP_CONSTANT,
+    OP_CONSTANT_EXTENDED,
 } OpCode;
 
 typedef struct _Chunk {
@@ -25,10 +26,10 @@ typedef struct _Chunk {
 
 void chunk_ctor(Chunk *chunk);
 void chunk_dtor(Chunk *chunk);
-void chunk_write(Chunk *chunk, uint8_t data, uint32_t line);
-uint32_t chunk_get_source_line(Chunk *chunk, uint32_t index);
-uint32_t chunk_add_constant(Chunk *chunk, Value value);
-Value chunk_get_constant(Chunk *chunk, uint32_t index);
+void chunk_code_write_return(Chunk *chunk, uint32_t line);
+void chunk_code_write_constant(Chunk *chunk, Value constant, uint32_t line);
+uint32_t chunk_source_line_read(Chunk *chunk, uint32_t index);
+Value chunk_constant_read(Chunk *chunk, uint32_t index);
 
 
 #endif // !CLOX_CHUNK_H

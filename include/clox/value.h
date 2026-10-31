@@ -21,7 +21,7 @@ void value_print(Value value);
 void value_array_ctor(ValueArray *array);
 void value_array_dtor(ValueArray *array);
 uint32_t value_array_write(ValueArray *array, Value value);
-Value value_array_get(ValueArray *array, uint32_t index);
+Value value_array_read(ValueArray *array, uint32_t index);
 
 #endif // !CLOX_VALUE_H
 

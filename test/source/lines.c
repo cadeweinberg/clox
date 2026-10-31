@@ -16,7 +16,7 @@ static MunitResult test_lines_xet([[maybe_unused]] const MunitParameter *,
 
 MunitTest lines_tests[] = {
     {
-        "/lines/xtor",
+        "xtor",
         test_lines_xtor,
         NULL,
         NULL,
@@ -24,7 +24,7 @@ MunitTest lines_tests[] = {
         NULL,
     },
     {
-        "/lines/xet",
+        "xet",
         test_lines_xet,
         NULL,
         NULL,

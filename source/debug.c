@@ -31,9 +31,9 @@ void disassemble_chunk(Chunk *chunk, const char *name) {
 uint32_t disassemble_instruction(Chunk *chunk, uint32_t offset) {
     printf("0x%04X ", offset);
 
-    uint32_t current_line = chunk_get_source_line(chunk, offset);
+    uint32_t current_line = chunk_source_line_read(chunk, offset);
     if (offset > 0) {
-        uint32_t previous_line = chunk_get_source_line(chunk, offset);
+        uint32_t previous_line = chunk_source_line_read(chunk, offset);
         if (current_line == previous_line) {
             printf("   | ");
         } else {
@@ -65,7 +65,7 @@ static uint32_t disassemble_instruction_simple(const char *name, uint32_t offset
 static uint32_t disassemble_instruction_constant(const char *name, Chunk *chunk, uint32_t offset) {
     uint8_t constant = chunk->code[offset + 1];
     printf("%-16s %4d '", name, constant);
-    value_print(chunk_get_constant(chunk, constant));
+    value_print(chunk_constant_read(chunk, constant));
     printf("'\n");
     return offset + 2;
 }
