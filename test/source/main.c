@@ -13,12 +13,14 @@
 #include "test/lines.h"
 #include "test/memory.h"
 #include "test/value.h"
+#include "test/debug.h"
 
 static MunitSuite suite_array[] = {
     {"/memory", memory_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE},
     {"/lines", lines_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE},
     {"/chunk", chunk_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE},
     {"/value", value_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE},
+    {"/debug", debug_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE},
     {NULL, NULL, NULL, 0, MUNIT_SUITE_OPTION_NONE}
 };
 

@@ -16,7 +16,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char *argv[]) {
 
     chunk_code_write_constant(&chunk, 1.2, 1);
     chunk_code_write_return(&chunk, 2);
-    disassemble_chunk(&chunk, "Hello Chunk disassembly");
+    disassemble_chunk(stdout, &chunk, "Hello Chunk disassembly");
 
     chunk_dtor(&chunk);
     return 0;

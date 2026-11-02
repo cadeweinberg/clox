@@ -45,7 +45,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 # And, I want to test and build with both GCC and Clang. So turning off support for 
 # compiler specific extensions makes sense. Though here again, I don't mind being tied
 # to a particular compiler for this project. 
-set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_C_EXTENSIONS ON)
 
 # When using CMAKE I like to set these directory variables in each project I use,
 # they make specifying the targets cleaner, and allow the project to define a stable
@@ -159,6 +159,7 @@ target_sources(clox_test PRIVATE
 	${CLOX_TEST_SOURCE_DIR}/main.c
 	${CLOX_TEST_SOURCE_DIR}/memory.c
 	${CLOX_TEST_SOURCE_DIR}/value.c
+	${CLOX_TEST_SOURCE_DIR}/debug.c
 )
 
 

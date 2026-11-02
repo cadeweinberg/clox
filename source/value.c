@@ -48,6 +48,6 @@ Value value_array_read(ValueArray *array, uint32_t index) {
     return array->values[index];
 }
 
-void value_print(Value value) {
-    printf("%g", value);
+void value_print(FILE *out, Value value) {
+    fprintf(out, "%g", value);
 }

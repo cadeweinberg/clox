@@ -6,6 +6,8 @@
 #ifndef CLOX_VALUE_H
 #define CLOX_VALUE_H
 
+#include <stdio.h>
+
 #include "clox/common.h"
 
 typedef double Value;
@@ -16,7 +18,7 @@ typedef struct _ValueArray {
     Value *values;
 } ValueArray;
 
-void value_print(Value value);
+void value_print(FILE *out, Value value);
 
 void value_array_ctor(ValueArray *array);
 void value_array_dtor(ValueArray *array);
