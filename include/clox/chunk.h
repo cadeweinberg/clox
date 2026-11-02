@@ -14,6 +14,13 @@ typedef enum _OpCode : uint8_t {
     OP_RETURN,
     OP_CONSTANT,
     OP_CONSTANT_EXTENDED,
+
+    OP_NEGATE,
+
+    OP_ADD,
+    OP_SUBTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE,
 } OpCode;
 
 typedef struct _Chunk {
@@ -28,6 +35,11 @@ void chunk_ctor(Chunk *chunk);
 void chunk_dtor(Chunk *chunk);
 void chunk_code_write_return(Chunk *chunk, uint32_t line);
 void chunk_code_write_constant(Chunk *chunk, Value constant, uint32_t line);
+void chunk_code_write_negate(Chunk *chunk, uint32_t line);
+void chunk_code_write_add(Chunk *chunk, uint32_t line);
+void chunk_code_write_subtract(Chunk *chunk, uint32_t line);
+void chunk_code_write_multiply(Chunk *chunk, uint32_t line);
+void chunk_code_write_divide(Chunk *chunk, uint32_t line);
 uint32_t chunk_source_line_read(Chunk *chunk, uint32_t index);
 Value chunk_constant_read(Chunk *chunk, uint32_t index);
 

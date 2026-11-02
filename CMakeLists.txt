@@ -94,7 +94,9 @@ target_sources(clox_library PRIVATE
 	${CLOX_SOURCE_DIR}/debug.c
 	${CLOX_SOURCE_DIR}/lines.c
 	${CLOX_SOURCE_DIR}/memory.c
+	${CLOX_SOURCE_DIR}/stack.c
 	${CLOX_SOURCE_DIR}/value.c
+	${CLOX_SOURCE_DIR}/vm.c
 )
 
 set_target_properties(clox_library PROPERTIES
@@ -154,12 +156,15 @@ target_link_libraries(clox_test PRIVATE
 )
 
 target_sources(clox_test PRIVATE
-	${CLOX_TEST_SOURCE_DIR}/lines.c
 	${CLOX_TEST_SOURCE_DIR}/chunk.c
+	${CLOX_TEST_SOURCE_DIR}/debug.c
+	${CLOX_TEST_SOURCE_DIR}/lines.c
 	${CLOX_TEST_SOURCE_DIR}/main.c
 	${CLOX_TEST_SOURCE_DIR}/memory.c
+	${CLOX_TEST_SOURCE_DIR}/stack.c
 	${CLOX_TEST_SOURCE_DIR}/value.c
-	${CLOX_TEST_SOURCE_DIR}/debug.c
+	${CLOX_TEST_SOURCE_DIR}/vm.c
+	
 )
 
 

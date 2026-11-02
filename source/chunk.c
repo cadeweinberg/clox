@@ -77,6 +77,31 @@ void chunk_code_write_constant(Chunk *chunk, Value constant, uint32_t line) {
     }
 }
 
+void chunk_code_write_negate(Chunk *chunk, uint32_t line) {
+    chunk_lines_write(chunk, line);
+    chunk_code_write(chunk, OP_NEGATE);
+}
+
+void chunk_code_write_add(Chunk *chunk, uint32_t line) {
+    chunk_lines_write(chunk, line);
+    chunk_code_write(chunk, OP_ADD);
+}
+
+void chunk_code_write_subtract(Chunk *chunk, uint32_t line) {
+    chunk_lines_write(chunk, line);
+    chunk_code_write(chunk, OP_SUBTRACT);
+}
+
+void chunk_code_write_multiply(Chunk *chunk, uint32_t line) {
+    chunk_lines_write(chunk, line);
+    chunk_code_write(chunk, OP_MULTIPLY);
+}
+
+void chunk_code_write_divide(Chunk *chunk, uint32_t line) {
+    chunk_lines_write(chunk, line);
+    chunk_code_write(chunk, OP_DIVIDE);
+}
+
 uint32_t chunk_source_line_read(Chunk *chunk, uint32_t index) {
     assert(chunk != NULL);
     return lines_get(&chunk->lines, index);

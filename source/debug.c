@@ -54,6 +54,21 @@ uint32_t disassemble_instruction(FILE *out, Chunk *chunk, uint32_t offset) {
     case OP_CONSTANT_EXTENDED:
         return disassemble_instruction_constant_extended(out, "OP_CONSTANT_EXTENDED", chunk, offset);
 
+    case OP_NEGATE:
+        return disassemble_instruction_simple(out, "OP_NEGATE", offset);
+
+    case OP_ADD:
+        return disassemble_instruction_simple(out, "OP_ADD", offset);
+
+    case OP_SUBTRACT:
+        return disassemble_instruction_simple(out, "OP_SUBTRACT", offset);
+
+    case OP_MULTIPLY:
+        return disassemble_instruction_simple(out, "OP_MULTIPLY", offset);
+
+    case OP_DIVIDE:
+        return disassemble_instruction_simple(out, "OP_DIVIDE", offset);
+
     default:
         fprintf(out, "Unknown opcode %X\n", instruction);
         return offset + 1;
